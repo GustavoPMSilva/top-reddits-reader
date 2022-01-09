@@ -9,7 +9,10 @@ import kotlinx.coroutines.flow.flow
 
 class PostsRepository(private val postsApi: PostsApi) {
 
-    suspend fun fetchTop(): Flow<Resource<TopPostsResponse>> = flow {
-        emit(postsApi.fetchTop())
+    suspend fun fetchTop(after: String): Flow<Resource<TopPostsResponse>> = flow {
+        val topPostsResponse = postsApi.fetchTop(after)
+        topPostsResponse.data.posts =
+            topPostsResponse.data.posts.filter { it.data.thumbnail != "default" }
+        emit(topPostsResponse)
     }.toFlowResource()
 }
