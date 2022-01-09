@@ -1,5 +1,7 @@
 package br.com.gustavopmsilva.topredditsreader.di
 
+import br.com.gustavopmsilva.topredditsreader.core.extension.resolveRetrofit
+import br.com.gustavopmsilva.topredditsreader.data.api.PostsApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -14,6 +16,7 @@ val networkModule = module {
     single { getOkHttpClient() }
     single { getMoshi() }
     single { getRetrofit(get(), get()) }
+    single<PostsApi> { resolveRetrofit() }
 }
 
 private fun getRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
