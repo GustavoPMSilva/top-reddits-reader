@@ -16,7 +16,15 @@ class MainViewModel(private val postsRepository: PostsRepository) : ViewModel() 
     val posts: LiveData<Resource<TopPostsResponse>>
         get() = _posts
 
-    fun fetchPosts(after: String) {
+    fun fetchPosts() {
+        fetchPosts("")
+    }
+
+    fun fetchNextPosts() {
+        fetchPosts(_posts.value?.data?.data?.after ?: "")
+    }
+
+    private fun fetchPosts(after: String) {
         viewModelScope.launch {
             postsRepository.fetchTop(after).collect { _posts.value = it }
         }

@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import br.com.gustavopmsilva.topredditsreader.core.base.Resource
 import br.com.gustavopmsilva.topredditsreader.databinding.MainFragmentBinding
 import org.koin.android.ext.android.inject
@@ -18,6 +21,7 @@ class MainFragment : Fragment() {
     private val viewModel: MainViewModel by viewModel()
 
     private val postAdapter: PostAdapter by inject()
+    private lateinit var layoutManager: LinearLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,16 +38,34 @@ class MainFragment : Fragment() {
         setupViews()
         setupObservers()
 
-        viewModel.fetchPosts("")
+        viewModel.fetchPosts()
     }
 
     private fun setupViews() {
+        layoutManager = LinearLayoutManager(context)
+
         with(binding) {
             srlRefresh.setOnRefreshListener {
                 postAdapter.posts = emptyList()
-                viewModel.fetchPosts("")
+                viewModel.fetchPosts()
             }
+            rcvPosts.layoutManager = layoutManager
             rcvPosts.adapter = postAdapter
+            rcvPosts.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (srlRefresh.isRefreshing) {
+                        return
+                    }
+
+                    val visibleItemCount = layoutManager.childCount
+                    val totalItemCount = layoutManager.itemCount
+                    val pastVisibleItems = layoutManager.findFirstVisibleItemPosition()
+                    if (pastVisibleItems + visibleItemCount >= totalItemCount) {
+                        viewModel.fetchNextPosts()
+                    }
+                }
+            })
         }
     }
 
