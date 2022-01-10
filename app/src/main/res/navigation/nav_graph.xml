@@ -20,6 +20,6 @@
         android:label="DetailFragment" >
         <argument
             android:name="post"
-            app:argType="br.com.gustavopmsilva.topredditsreader.data.model.Post" />
+            app:argType="br.com.gustavopmsilva.topredditsreader.data.domain.Post" />
     </fragment>
 </navigation>
