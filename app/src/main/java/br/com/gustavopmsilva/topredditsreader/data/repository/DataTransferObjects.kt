@@ -6,26 +6,17 @@ import br.com.gustavopmsilva.topredditsreader.data.database.DatabasePostData
 import br.com.gustavopmsilva.topredditsreader.data.domain.Post
 import br.com.gustavopmsilva.topredditsreader.data.domain.PostList
 
-/*fun List<DatabasePostData>.asDomainModel(): List<NetworkPost> =
+@JvmName("asDomainModelDatabasePostData")
+fun List<DatabasePostData>.asDomainModel(): List<Post> =
     map {
-        NetworkPost(
-            NetworkPostData(
-                it.id,
-                it.title,
-                it.thumbnail,
-                it.isVideo,
-                it.url?.let { url ->
-                    NetworkPostPreview(
-                        listOf(
-                            NetworkPostImage(
-                                NetworkPostImageSource(url)
-                            )
-                        )
-                    )
-                }
-            )
+        Post(
+            it.id,
+            it.title,
+            it.thumbnail,
+            it.isVideo,
+            it.url
         )
-    }*/
+    }
 
 fun NetworkTopPostsResponse.asDatabaseModel(): Array<DatabasePostData> {
     return data.posts.map {
@@ -39,6 +30,7 @@ fun NetworkTopPostsResponse.asDatabaseModel(): Array<DatabasePostData> {
     }.toTypedArray()
 }
 
+@JvmName("asDomainModelNetworkPost")
 fun List<NetworkPost>.asDomainModel(): List<Post> =
     map {
         Post(
