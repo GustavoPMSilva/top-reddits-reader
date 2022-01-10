@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class ListViewModel(private val postsRepository: PostsRepository) : ViewModel() {
 
-    private val _loading = MutableLiveData(false)
+    private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean>
         get() = _loading
 
