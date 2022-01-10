@@ -93,7 +93,7 @@ class DetailFragmentTest : KoinTest {
             numComments = 152,
             isImagePost = true
         )
-        
+
         scenario = launchFragmentInContainer(bundleOf("post" to mockedPostWithZeroVotes))
 
         onView(withId(R.id.tv_title)).check(matches(withText(mockedPostWithZeroVotes.title)))
