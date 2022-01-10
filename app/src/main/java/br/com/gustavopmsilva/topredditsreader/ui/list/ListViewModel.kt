@@ -1,4 +1,4 @@
-package br.com.gustavopmsilva.topredditsreader.ui.main
+package br.com.gustavopmsilva.topredditsreader.ui.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import br.com.gustavopmsilva.topredditsreader.data.repository.PostsRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val postsRepository: PostsRepository) : ViewModel() {
+class ListViewModel(private val postsRepository: PostsRepository) : ViewModel() {
 
     private val _loading = MutableLiveData(false)
     val loading: LiveData<Boolean>

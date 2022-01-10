@@ -1,4 +1,4 @@
-package br.com.gustavopmsilva.topredditsreader.ui.main
+package br.com.gustavopmsilva.topredditsreader.ui.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,18 +7,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import br.com.gustavopmsilva.topredditsreader.databinding.MainFragmentBinding
+import br.com.gustavopmsilva.topredditsreader.databinding.ListFragmentBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainFragment : Fragment() {
+class ListFragment : Fragment() {
 
-    private var _binding: MainFragmentBinding? = null
+    private var _binding: ListFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: MainViewModel by viewModel()
+    private val viewModel: ListViewModel by viewModel()
 
-    private val postAdapter: PostAdapter by inject()
+    private val postListAdapter: PostListAdapter by inject()
     private lateinit var layoutManager: LinearLayoutManager
 
     override fun onCreateView(
@@ -26,7 +26,7 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        _binding = ListFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -47,7 +47,7 @@ class MainFragment : Fragment() {
                 viewModel.fetchPosts()
             }
             rcvPosts.layoutManager = layoutManager
-            rcvPosts.adapter = postAdapter
+            rcvPosts.adapter = postListAdapter
             rcvPosts.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
@@ -72,7 +72,7 @@ class MainFragment : Fragment() {
         }
 
         viewModel.posts.observe(viewLifecycleOwner) {
-            postAdapter.posts = it.posts
+            postListAdapter.posts = it.posts
         }
     }
 
@@ -82,6 +82,6 @@ class MainFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = ListFragment()
     }
 }

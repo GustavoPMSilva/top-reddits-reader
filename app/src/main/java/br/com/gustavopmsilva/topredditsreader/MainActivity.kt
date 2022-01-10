@@ -2,7 +2,7 @@ package br.com.gustavopmsilva.topredditsreader
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import br.com.gustavopmsilva.topredditsreader.ui.main.MainFragment
+import br.com.gustavopmsilva.topredditsreader.ui.list.ListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
+                .replace(R.id.container, ListFragment.newInstance())
                 .commitNow()
         }
     }
