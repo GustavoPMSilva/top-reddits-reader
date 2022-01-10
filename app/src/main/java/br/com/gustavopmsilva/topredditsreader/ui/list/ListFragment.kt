@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -45,6 +46,7 @@ class ListFragment : Fragment() {
     }
 
     private fun setupViews() {
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         requireActivity().title = getString(R.string.top_reddit_posts)
 
         layoutManager = GridLayoutManager(context, 3)
