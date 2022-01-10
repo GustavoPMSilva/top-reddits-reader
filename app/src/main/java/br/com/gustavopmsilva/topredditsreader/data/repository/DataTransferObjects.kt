@@ -1,5 +1,7 @@
 package br.com.gustavopmsilva.topredditsreader.data.repository
 
+import android.content.Context
+import br.com.gustavopmsilva.topredditsreader.R
 import br.com.gustavopmsilva.topredditsreader.data.api.NetworkPost
 import br.com.gustavopmsilva.topredditsreader.data.api.NetworkTopPostsResponse
 import br.com.gustavopmsilva.topredditsreader.data.database.DatabasePostData
@@ -20,11 +22,11 @@ fun List<DatabasePostData>.asDomainModel(): List<Post> =
             it.subredditName,
             it.author,
             it.numComments,
-            it.postHint
+            it.isImagePost
         )
     }
 
-fun NetworkTopPostsResponse.asDatabaseModel(): Array<DatabasePostData> {
+fun NetworkTopPostsResponse.asDatabaseModel(context: Context): Array<DatabasePostData> {
     return data.posts.map {
         DatabasePostData(
             it.data.id,
@@ -37,13 +39,13 @@ fun NetworkTopPostsResponse.asDatabaseModel(): Array<DatabasePostData> {
             it.data.subredditName,
             it.data.author,
             it.data.numComments,
-            it.data.postHint
+            it.data.postHint?.equals(context.getString(R.string.image)) == true
         )
     }.toTypedArray()
 }
 
 @JvmName("asDomainModelNetworkPost")
-fun List<NetworkPost>.asDomainModel(): List<Post> =
+fun List<NetworkPost>.asDomainModel(context: Context): List<Post> =
     map {
         Post(
             it.data.id,
@@ -56,10 +58,10 @@ fun List<NetworkPost>.asDomainModel(): List<Post> =
             it.data.subredditName,
             it.data.author,
             it.data.numComments,
-            it.data.postHint
+            it.data.postHint?.equals(context.getString(R.string.image)) == true
         )
     }
 
-fun NetworkTopPostsResponse.asDomainModel(): PostList {
-    return PostList(data.after, data.posts.asDomainModel())
+fun NetworkTopPostsResponse.asDomainModel(context: Context): PostList {
+    return PostList(data.after, data.posts.asDomainModel(context))
 }

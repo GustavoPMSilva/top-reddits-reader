@@ -15,5 +15,5 @@ data class Post(
     val subredditName: String,
     val author: String,
     val numComments: Int,
-    val postHint: String?
+    val isImagePost: Boolean
 ) : Parcelable

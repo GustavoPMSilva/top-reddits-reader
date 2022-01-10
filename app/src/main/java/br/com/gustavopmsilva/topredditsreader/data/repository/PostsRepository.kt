@@ -37,9 +37,9 @@ class PostsRepository(
             }
 
         withContext(Dispatchers.IO) {
-            database.postDataDao.insertAll(*topPostsResponse.asDatabaseModel())
+            database.postDataDao.insertAll(*topPostsResponse.asDatabaseModel(context))
         }
 
-        emit(topPostsResponse.asDomainModel())
+        emit(topPostsResponse.asDomainModel(context))
     }.toFlowResource()
 }

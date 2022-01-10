@@ -7,6 +7,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val listModule = module {
-    viewModel { ListViewModel(androidApplication(), get()) }
+    viewModel { ListViewModel(get()) }
     single { (onClickListener: ListPostAdapter.OnClickListener) -> ListPostAdapter(onClickListener) }
 }

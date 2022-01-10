@@ -2,6 +2,7 @@ package br.com.gustavopmsilva.topredditsreader.ui.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -32,9 +33,10 @@ class ListPostAdapter(private val onClickListener: OnClickListener) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(post: Post) {
-            binding.imgThumbnail.apply {
-                setOnClickListener { onClickListener.onClick(post) }
-                load(post.thumbnail)
+            with(binding) {
+                clLayout.setOnClickListener { onClickListener.onClick(post) }
+                ivThumbnail.load(post.thumbnail)
+                ivCamera.isVisible = post.isImagePost
             }
         }
     }
