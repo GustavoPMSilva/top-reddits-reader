@@ -33,7 +33,7 @@ class PostsRepository(
         val topPostsResponse = postsApi.fetchTop(after)
         topPostsResponse.data.posts =
             topPostsResponse.data.posts.filter {
-                it.data.thumbnail != context.getString(R.string.default_thumbnail)
+                it.data.thumbnail.startsWith(context.getString(R.string.http))
             }
 
         withContext(Dispatchers.IO) {
