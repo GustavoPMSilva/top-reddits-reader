@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-class DatabasePostData(
+data class DatabasePostData(
     @PrimaryKey val id: String,
     val title: String,
     val thumbnail: String,
