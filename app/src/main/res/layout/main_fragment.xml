@@ -20,8 +20,9 @@
             android:id="@+id/rcv_posts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingVertical="8dp"
-            android:paddingHorizontal="16dp"/>
+            android:clipToPadding="false"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
