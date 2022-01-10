@@ -2,19 +2,15 @@ package br.com.gustavopmsilva.topredditsreader.ui.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.gustavopmsilva.topredditsreader.data.domain.Post
 import br.com.gustavopmsilva.topredditsreader.databinding.PostRowBinding
 import coil.load
 
 class PostListAdapter(private val onClickListener: OnClickListener) :
-    RecyclerView.Adapter<PostListAdapter.Holder>() {
-
-    var posts: List<Post> = emptyList()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+    ListAdapter<Post, PostListAdapter.Holder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val rowBinding = PostRowBinding.inflate(
@@ -26,10 +22,8 @@ class PostListAdapter(private val onClickListener: OnClickListener) :
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(posts[position])
+        holder.bind(getItem(position))
     }
-
-    override fun getItemCount() = posts.size
 
     class Holder(
         private val binding: PostRowBinding,
@@ -38,13 +32,25 @@ class PostListAdapter(private val onClickListener: OnClickListener) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(post: Post) {
-            binding.llLayout.setOnClickListener { onClickListener.onClick(post) }
-            binding.tvTitle.text = post.title
-            binding.imgThumbnail.load(post.thumbnail)
+            binding.imgThumbnail.apply {
+                setOnClickListener { onClickListener.onClick(post) }
+                load(post.thumbnail)
+            }
         }
     }
 
     class OnClickListener(val clickListener: (post: Post) -> Unit) {
         fun onClick(post: Post) = clickListener(post)
+    }
+
+    companion object DiffCallback : DiffUtil.ItemCallback<Post>() {
+        override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
+            return oldItem === newItem
+        }
+
+        override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
+            return oldItem.id == newItem.id
+        }
+
     }
 }

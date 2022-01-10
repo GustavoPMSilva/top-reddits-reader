@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.gustavopmsilva.topredditsreader.R
 import br.com.gustavopmsilva.topredditsreader.databinding.ListFragmentBinding
@@ -24,7 +24,7 @@ class ListFragment : Fragment() {
     private val postListAdapter: PostListAdapter by inject {
         parametersOf(PostListAdapter.OnClickListener { viewModel.onPostClicked(it) })
     }
-    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var layoutManager: GridLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +47,7 @@ class ListFragment : Fragment() {
     private fun setupViews() {
         requireActivity().title = getString(R.string.top_reddit_posts)
 
-        layoutManager = LinearLayoutManager(context)
+        layoutManager = GridLayoutManager(context, 3)
 
         with(binding) {
             srlRefresh.setOnRefreshListener {
@@ -62,9 +62,10 @@ class ListFragment : Fragment() {
                         return
                     }
 
-                    val visibleItemCount = layoutManager.childCount
-                    val totalItemCount = layoutManager.itemCount
-                    val pastVisibleItems = layoutManager.findFirstVisibleItemPosition()
+                    val visibleItemCount: Int = layoutManager.childCount
+                    val totalItemCount: Int = layoutManager.itemCount
+                    val pastVisibleItems: Int = layoutManager.findFirstVisibleItemPosition()
+
                     if (pastVisibleItems + visibleItemCount >= totalItemCount) {
                         viewModel.fetchNextPosts()
                     }
@@ -79,7 +80,7 @@ class ListFragment : Fragment() {
         }
 
         viewModel.posts.observe(viewLifecycleOwner) {
-            postListAdapter.posts = it.posts
+            postListAdapter.submitList(it.posts)
         }
 
         viewModel.navigateToPostDetail.observe(viewLifecycleOwner) {
