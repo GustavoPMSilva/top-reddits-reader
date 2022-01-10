@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.gustavopmsilva.topredditsreader.data.model.Post
 import br.com.gustavopmsilva.topredditsreader.databinding.PostRowBinding
+import coil.load
 
 class PostListAdapter : RecyclerView.Adapter<PostListAdapter.Holder>() {
 

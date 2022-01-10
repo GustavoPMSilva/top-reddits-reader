@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 class DatabasePostData(
+    @PrimaryKey val id: String,
     val title: String,
-    @PrimaryKey val thumbnail: String
+    val thumbnail: String
 )
