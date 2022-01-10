@@ -5,7 +5,7 @@ import br.com.gustavopmsilva.topredditsreader.ui.list.PostListAdapter
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val mainModule = module {
+val listModule = module {
     viewModel { ListViewModel(get()) }
-    single { PostListAdapter() }
+    single { (onClickListener: PostListAdapter.OnClickListener) -> PostListAdapter(onClickListener) }
 }
