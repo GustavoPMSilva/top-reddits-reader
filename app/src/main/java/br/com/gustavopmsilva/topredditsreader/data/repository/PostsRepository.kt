@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 class PostsRepository(private val database: PostsDatabase, private val postsApi: PostsApi) {
 
     suspend fun fetchTop(after: String?): Flow<Resource<PostList>> = flow {
-        after?.let {
+        if (after == null) {
             var databasePostList: PostList
 
             withContext(Dispatchers.IO) {
