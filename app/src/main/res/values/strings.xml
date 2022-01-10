@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Top Reddits reader</string>
+    <string name="default_thumbnail">default</string>
+    <string name="top_reddit_posts">Top Reddit Posts</string>
 </resources>

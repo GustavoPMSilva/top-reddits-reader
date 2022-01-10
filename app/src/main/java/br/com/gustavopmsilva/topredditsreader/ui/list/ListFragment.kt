@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import br.com.gustavopmsilva.topredditsreader.R
 import br.com.gustavopmsilva.topredditsreader.databinding.ListFragmentBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,6 +45,8 @@ class ListFragment : Fragment() {
     }
 
     private fun setupViews() {
+        requireActivity().title = getString(R.string.top_reddit_posts)
+
         layoutManager = LinearLayoutManager(context)
 
         with(binding) {

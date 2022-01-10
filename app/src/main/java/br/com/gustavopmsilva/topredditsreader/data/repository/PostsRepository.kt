@@ -1,5 +1,7 @@
 package br.com.gustavopmsilva.topredditsreader.data.repository
 
+import android.content.Context
+import br.com.gustavopmsilva.topredditsreader.R
 import br.com.gustavopmsilva.topredditsreader.core.base.Resource
 import br.com.gustavopmsilva.topredditsreader.core.extension.toFlowResource
 import br.com.gustavopmsilva.topredditsreader.data.api.PostsApi
@@ -10,7 +12,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
-class PostsRepository(private val database: PostsDatabase, private val postsApi: PostsApi) {
+class PostsRepository(
+    private val context: Context,
+    private val database: PostsDatabase,
+    private val postsApi: PostsApi
+) {
 
     suspend fun fetchTop(after: String?): Flow<Resource<PostList>> = flow {
         if (after == null) {
@@ -18,7 +24,7 @@ class PostsRepository(private val database: PostsDatabase, private val postsApi:
 
             withContext(Dispatchers.IO) {
                 val databasePosts = database.postDataDao.getPosts().asDomainModel()
-                databasePostList = PostList("", databasePosts)
+                databasePostList = PostList(null, databasePosts)
             }
 
             emit(databasePostList)
@@ -26,7 +32,9 @@ class PostsRepository(private val database: PostsDatabase, private val postsApi:
 
         val topPostsResponse = postsApi.fetchTop(after)
         topPostsResponse.data.posts =
-            topPostsResponse.data.posts.filter { it.data.thumbnail != "default" }
+            topPostsResponse.data.posts.filter {
+                it.data.thumbnail != context.getString(R.string.default_thumbnail)
+            }
 
         withContext(Dispatchers.IO) {
             database.postDataDao.insertAll(*topPostsResponse.asDatabaseModel())
