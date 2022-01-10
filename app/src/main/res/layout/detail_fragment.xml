@@ -82,7 +82,7 @@
             android:id="@+id/tv_num_comments"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="8dp"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="@id/iv_num_comments"
             app:layout_constraintStart_toEndOf="@id/iv_num_comments"
@@ -116,7 +116,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/open_in_reddit"
+            android:text="@string/open_on_reddit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_label_author" />

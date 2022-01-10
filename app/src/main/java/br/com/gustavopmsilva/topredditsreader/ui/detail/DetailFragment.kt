@@ -10,11 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import br.com.gustavopmsilva.topredditsreader.R
 import br.com.gustavopmsilva.topredditsreader.databinding.DetailFragmentBinding
 import coil.load
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-
 
 class DetailFragment : Fragment() {
 
@@ -55,7 +55,17 @@ class DetailFragment : Fragment() {
                         HtmlCompat.fromHtml(url, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
                     )
                 }
-                tvVotes.text = post.ups.toString()
+                when {
+                    post.ups > 0 -> {
+                        tvVotes.text = post.ups.toString()
+                    }
+                    post.downs > 0 -> {
+                        tvVotes.text = getString(R.string.negative_votes, post.downs)
+                    }
+                    else -> {
+                        tvVotes.text = getString(R.string.zero)
+                    }
+                }
                 tvNumComments.text = post.numComments.toString()
                 tvAuthor.text = post.author
                 btnOpen.setOnClickListener {
