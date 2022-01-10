@@ -21,8 +21,8 @@ class ListFragment : Fragment() {
 
     private val viewModel: ListViewModel by viewModel()
 
-    private val postListAdapter: PostListAdapter by inject {
-        parametersOf(PostListAdapter.OnClickListener { viewModel.onPostClicked(it) })
+    private val listPostAdapter: ListPostAdapter by inject {
+        parametersOf(ListPostAdapter.OnClickListener { viewModel.onPostClicked(it) })
     }
     private lateinit var layoutManager: GridLayoutManager
 
@@ -54,7 +54,7 @@ class ListFragment : Fragment() {
                 viewModel.fetchPosts()
             }
             rcvPosts.layoutManager = layoutManager
-            rcvPosts.adapter = postListAdapter
+            rcvPosts.adapter = listPostAdapter
             rcvPosts.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
@@ -80,7 +80,7 @@ class ListFragment : Fragment() {
         }
 
         viewModel.posts.observe(viewLifecycleOwner) {
-            postListAdapter.submitList(it.posts)
+            listPostAdapter.submitList(it.posts)
         }
 
         viewModel.navigateToPostDetail.observe(viewLifecycleOwner) {

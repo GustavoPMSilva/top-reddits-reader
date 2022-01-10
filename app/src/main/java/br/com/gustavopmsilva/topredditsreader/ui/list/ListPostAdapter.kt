@@ -9,8 +9,8 @@ import br.com.gustavopmsilva.topredditsreader.data.domain.Post
 import br.com.gustavopmsilva.topredditsreader.databinding.PostRowBinding
 import coil.load
 
-class PostListAdapter(private val onClickListener: OnClickListener) :
-    ListAdapter<Post, PostListAdapter.Holder>(DiffCallback) {
+class ListPostAdapter(private val onClickListener: OnClickListener) :
+    ListAdapter<Post, ListPostAdapter.Holder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val rowBinding = PostRowBinding.inflate(
