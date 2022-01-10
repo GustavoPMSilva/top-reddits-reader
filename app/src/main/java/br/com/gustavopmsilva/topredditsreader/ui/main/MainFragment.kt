@@ -5,10 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import br.com.gustavopmsilva.topredditsreader.core.base.Resource
 import br.com.gustavopmsilva.topredditsreader.databinding.MainFragmentBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -46,7 +44,6 @@ class MainFragment : Fragment() {
 
         with(binding) {
             srlRefresh.setOnRefreshListener {
-                postAdapter.posts = emptyList()
                 viewModel.fetchPosts()
             }
             rcvPosts.layoutManager = layoutManager
@@ -70,19 +67,12 @@ class MainFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.posts.observe(viewLifecycleOwner) {
-            when (it) {
-                is Resource.Loading -> binding.srlRefresh.isRefreshing = true
-                is Resource.Success -> {
-                    binding.srlRefresh.isRefreshing = false
+        viewModel.loading.observe(viewLifecycleOwner) {
+            binding.srlRefresh.isRefreshing = it
+        }
 
-                    it.data?.data?.posts?.let { posts ->
-                        val newList = postAdapter.posts.toMutableList().apply { addAll(posts) }
-                        postAdapter.posts = newList
-                    }
-                }
-                is Resource.Error -> binding.srlRefresh.isRefreshing = false
-            }
+        viewModel.posts.observe(viewLifecycleOwner) {
+            postAdapter.posts = it.posts
         }
     }
 

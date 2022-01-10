@@ -1,6 +1,7 @@
 package br.com.gustavopmsilva.topredditsreader
 
 import android.app.Application
+import br.com.gustavopmsilva.topredditsreader.di.databaseModule
 import br.com.gustavopmsilva.topredditsreader.di.mainModule
 import br.com.gustavopmsilva.topredditsreader.di.networkModule
 import br.com.gustavopmsilva.topredditsreader.di.repositoryModule
@@ -14,7 +15,7 @@ class MyApplication : Application() {
 
         startKoin {
             androidContext(this@MyApplication)
-            modules(listOf(mainModule, networkModule, repositoryModule))
+            modules(listOf(mainModule, networkModule, repositoryModule, databaseModule))
         }
     }
 }
