@@ -46,7 +46,11 @@ class ListFragment : Fragment() {
     }
 
     private fun setupViews() {
-        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        if (requireActivity() is AppCompatActivity) {
+            (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(
+                false
+            )
+        }
         requireActivity().title = getString(R.string.top_reddits)
 
         layoutManager = GridLayoutManager(context, 3)

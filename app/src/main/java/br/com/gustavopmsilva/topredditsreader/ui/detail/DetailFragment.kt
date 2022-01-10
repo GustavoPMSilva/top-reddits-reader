@@ -42,7 +42,9 @@ class DetailFragment : Fragment() {
     }
 
     private fun setupViews() {
-        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        if (requireActivity() is AppCompatActivity) {
+            (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
     }
 
     private fun setupObservers() {
