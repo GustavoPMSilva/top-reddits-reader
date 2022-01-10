@@ -34,6 +34,7 @@ class PostAdapter : RecyclerView.Adapter<PostAdapter.Holder>() {
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(post: Post) {
+            binding.tvTitle.text = post.data.title
             binding.imgThumbnail.load(post.data.thumbnail)
         }
     }
