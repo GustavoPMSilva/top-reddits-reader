@@ -7,5 +7,7 @@ import androidx.room.PrimaryKey
 class DatabasePostData(
     @PrimaryKey val id: String,
     val title: String,
-    val thumbnail: String
+    val thumbnail: String,
+    val isVideo: Boolean,
+    val url: String?
 )

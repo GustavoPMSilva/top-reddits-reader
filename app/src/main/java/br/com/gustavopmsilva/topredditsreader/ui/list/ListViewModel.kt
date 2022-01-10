@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.gustavopmsilva.topredditsreader.core.base.Resource
-import br.com.gustavopmsilva.topredditsreader.data.model.PostList
+import br.com.gustavopmsilva.topredditsreader.data.domain.Post
+import br.com.gustavopmsilva.topredditsreader.data.domain.PostList
 import br.com.gustavopmsilva.topredditsreader.data.repository.PostsRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -20,15 +21,19 @@ class ListViewModel(private val postsRepository: PostsRepository) : ViewModel() 
     val posts: LiveData<PostList>
         get() = _posts
 
+    private val _navigateToPostDetail = MutableLiveData<Post?>()
+    val navigateToPostDetail: LiveData<Post?>
+        get() = _navigateToPostDetail
+
     fun fetchPosts() {
-        fetchPosts("")
+        fetchPosts(null)
     }
 
     fun fetchNextPosts() {
-        fetchPosts(_posts.value?.after ?: "")
+        fetchPosts(_posts.value?.after)
     }
 
-    private fun fetchPosts(after: String) {
+    private fun fetchPosts(after: String?) {
         viewModelScope.launch {
             postsRepository.fetchTop(after).collect {
                 when (it) {
@@ -38,7 +43,7 @@ class ListViewModel(private val postsRepository: PostsRepository) : ViewModel() 
                         _loading.value = false
 
                         it.data?.let { data ->
-                            if (after != "") {
+                            after?.let {
                                 val list = _posts.value?.posts?.toMutableList()
                                     ?.apply { addAll(data.posts) } ?: emptyList()
                                 data.posts = list
@@ -51,5 +56,15 @@ class ListViewModel(private val postsRepository: PostsRepository) : ViewModel() 
                 }
             }
         }
+    }
+
+    fun onPostClicked(post: Post) {
+        if (!post.isVideo) {
+            _navigateToPostDetail.value = post
+        }
+    }
+
+    fun onNavigationCompleted() {
+        _navigateToPostDetail.value = null
     }
 }

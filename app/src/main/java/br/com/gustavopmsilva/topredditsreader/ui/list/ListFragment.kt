@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.gustavopmsilva.topredditsreader.databinding.ListFragmentBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class ListFragment : Fragment() {
 
@@ -18,7 +20,9 @@ class ListFragment : Fragment() {
 
     private val viewModel: ListViewModel by viewModel()
 
-    private val postListAdapter: PostListAdapter by inject()
+    private val postListAdapter: PostListAdapter by inject {
+        parametersOf(PostListAdapter.OnClickListener { viewModel.onPostClicked(it) })
+    }
     private lateinit var layoutManager: LinearLayoutManager
 
     override fun onCreateView(
@@ -74,14 +78,19 @@ class ListFragment : Fragment() {
         viewModel.posts.observe(viewLifecycleOwner) {
             postListAdapter.posts = it.posts
         }
+
+        viewModel.navigateToPostDetail.observe(viewLifecycleOwner) {
+            it?.let {
+                findNavController().navigate(
+                    ListFragmentDirections.actionListFragmentToDetailFragment(it)
+                )
+                viewModel.onNavigationCompleted()
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        fun newInstance() = ListFragment()
     }
 }
