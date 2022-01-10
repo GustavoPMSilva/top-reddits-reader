@@ -40,9 +40,8 @@ class ListViewModel(private val postsRepository: PostsRepository) : ViewModel() 
                     is Resource.Loading ->
                         _loading.value = true
                     is Resource.Success -> {
-                        _loading.value = false
-
                         it.data?.let { data ->
+                            data.after?.let { _loading.value = false }
                             after?.let {
                                 val list = _posts.value?.posts?.toMutableList()
                                     ?.apply { addAll(data.posts) } ?: emptyList()

@@ -9,5 +9,11 @@ data class Post(
     val title: String,
     val thumbnail: String,
     val isVideo: Boolean,
-    val url: String?
+    val image: String?,
+    val permalink: String,
+    val ups: Long,
+    val downs: Long,
+    val subredditName: String,
+    val author: String,
+    val numComments: Int
 ) : Parcelable

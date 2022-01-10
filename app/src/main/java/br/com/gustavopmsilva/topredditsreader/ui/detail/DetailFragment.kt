@@ -1,5 +1,7 @@
 package br.com.gustavopmsilva.topredditsreader.ui.detail
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import br.com.gustavopmsilva.topredditsreader.databinding.DetailFragmentBinding
 import coil.load
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+
 
 class DetailFragment : Fragment() {
 
@@ -37,14 +40,29 @@ class DetailFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.postData.observe(viewLifecycleOwner) {
+        viewModel.postData.observe(viewLifecycleOwner) { post ->
             with(binding) {
-                tvTitle.text = it.title
-                it.url?.let { url ->
+                requireActivity().title = post.subredditName
+                tvTitle.text = post.title
+                post.image?.let { url ->
                     ivImage.load(
                         HtmlCompat.fromHtml(url, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
                     )
                 }
+                tvVotes.text = post.ups.toString()
+                tvNumComments.text = post.numComments.toString()
+                tvAuthor.text = post.author
+                btnOpen.setOnClickListener {
+                    viewModel.openRedditInBrowser()
+                }
+            }
+        }
+
+        viewModel.openUrl.observe(viewLifecycleOwner) {
+            it?.let { url ->
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(browserIntent)
+                viewModel.onOpenRedditInBrowserCompleted()
             }
         }
     }
