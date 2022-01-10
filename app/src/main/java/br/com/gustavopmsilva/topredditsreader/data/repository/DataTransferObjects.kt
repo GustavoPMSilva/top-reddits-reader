@@ -13,14 +13,14 @@ fun List<DatabasePostData>.asDomainModel(): List<Post> =
             it.id,
             it.title,
             it.thumbnail,
-            it.isVideo,
             it.image,
             it.permalink,
             it.ups,
             it.downs,
             it.subredditName,
             it.author,
-            it.numComments
+            it.numComments,
+            it.postHint
         )
     }
 
@@ -30,14 +30,14 @@ fun NetworkTopPostsResponse.asDatabaseModel(): Array<DatabasePostData> {
             it.data.id,
             it.data.title,
             it.data.thumbnail,
-            it.data.isVideo,
-            it.data.preview?.images?.get(0)?.source?.url,
+            it.data.image,
             it.data.permalink,
             it.data.ups,
             it.data.downs,
             it.data.subredditName,
             it.data.author,
-            it.data.numComments
+            it.data.numComments,
+            it.data.postHint
         )
     }.toTypedArray()
 }
@@ -49,14 +49,14 @@ fun List<NetworkPost>.asDomainModel(): List<Post> =
             it.data.id,
             it.data.title,
             it.data.thumbnail,
-            it.data.isVideo,
-            it.data.preview?.images?.get(0)?.source?.url,
+            it.data.image,
             it.data.permalink,
             it.data.ups,
             it.data.downs,
             it.data.subredditName,
             it.data.author,
-            it.data.numComments
+            it.data.numComments,
+            it.data.postHint
         )
     }
 

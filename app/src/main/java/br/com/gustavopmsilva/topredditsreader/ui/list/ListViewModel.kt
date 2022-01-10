@@ -1,9 +1,12 @@
 package br.com.gustavopmsilva.topredditsreader.ui.list
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.gustavopmsilva.topredditsreader.MyApplication
+import br.com.gustavopmsilva.topredditsreader.R
 import br.com.gustavopmsilva.topredditsreader.core.base.Resource
 import br.com.gustavopmsilva.topredditsreader.data.domain.Post
 import br.com.gustavopmsilva.topredditsreader.data.domain.PostList
@@ -11,7 +14,10 @@ import br.com.gustavopmsilva.topredditsreader.data.repository.PostsRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class ListViewModel(private val postsRepository: PostsRepository) : ViewModel() {
+class ListViewModel(
+    application: Application,
+    private val postsRepository: PostsRepository
+) : AndroidViewModel(application) {
 
     private val _loading = MutableLiveData(false)
     val loading: LiveData<Boolean>
@@ -58,9 +64,8 @@ class ListViewModel(private val postsRepository: PostsRepository) : ViewModel() 
     }
 
     fun onPostClicked(post: Post) {
-        if (!post.isVideo) {
-            _navigateToPostDetail.value = post
-        }
+        _navigateToPostDetail.value =
+            post.takeIf { it.postHint == getApplication<Application>().getString(R.string.image) }
     }
 
     fun onNavigationCompleted() {
