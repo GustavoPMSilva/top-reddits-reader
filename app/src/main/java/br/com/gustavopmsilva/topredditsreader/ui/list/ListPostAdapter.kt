@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import br.com.gustavopmsilva.topredditsreader.R
 import br.com.gustavopmsilva.topredditsreader.data.domain.Post
 import br.com.gustavopmsilva.topredditsreader.databinding.PostRowBinding
 import coil.load
@@ -35,7 +36,11 @@ class ListPostAdapter(private val onClickListener: OnClickListener) :
         fun bind(post: Post) {
             with(binding) {
                 clLayout.setOnClickListener { onClickListener.onClick(post) }
-                ivThumbnail.load(post.thumbnail)
+                ivThumbnail.load(post.thumbnail) {
+                    crossfade(true)
+                    placeholder(R.drawable.outline_photo_camera_24)
+                    error(R.drawable.outline_broken_image_24)
+                }
                 ivCamera.isVisible = post.isImagePost
             }
         }

@@ -53,7 +53,11 @@ class DetailFragment : Fragment() {
                 post.image?.let { url ->
                     ivImage.load(
                         HtmlCompat.fromHtml(url, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
-                    )
+                    ) {
+                        crossfade(true)
+                        placeholder(R.drawable.outline_photo_camera_24)
+                        error(R.drawable.outline_broken_image_24)
+                    }
                 }
                 when {
                     post.ups > 0 -> {
